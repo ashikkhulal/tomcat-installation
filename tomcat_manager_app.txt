@@ -1,20 +1,27 @@
 After TOMCAT installation, do the following steps for tomcat manager app:
 
 1. Edit conf/tomcat-users.xml file and add following user:
-    ---Insert---
+    $ sudo vim /opt/tomcat/conf/tomcat-users.xml
+    ---Insert at the end and save and exit (wq!)---
     <tomcat-users>
-
         <role rolename="manager-gui"/>
         <role rolename="manager-script"/>
         <role rolename="manager-jmx"/>
         <role rolename="manager-status"/>
-
-        <!--<user name="admin" password="admin" roles="manager-gui,manager-script,manager-jmx,manager-status" />-->
-        <user username="admin" password="admin" roles="manager-gui,manager-script,manager-jmx,manager-status"/>
-
+        <role rolename="admin-gui"/>
+        <role rolename="admin-script"/>
+        <user username="TomcatAdmin" password="secpa55wd" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script"/>
     </tomcat-users>
 
     ---
     Note: you can put another password if you want.
-2. Restart tomcat:
+2. Add comment markers around valve in /opt/tomcat/webapps/manager/META-INF/context.xml:
+    $ sudo vim /opt/tomcat/webapps/manager/META-INF/context.xml
+
+    Should look like this:
+        <!--
+            <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+        -->
+
+3. Restart tomcat:
     $ sudo systemctl restart tomcat

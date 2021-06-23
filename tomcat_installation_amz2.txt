@@ -1,4 +1,4 @@
-TOMCAT INSTALLATION IN RHEL:
+TOMCAT INSTALLATION IN Amazon Linux 2:
 
 1. Install updates:
     $ sudo yum update -y
