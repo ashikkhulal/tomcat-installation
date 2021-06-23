@@ -1,0 +1,57 @@
+TOMCAT INSTALLATION IN RHEL:
+
+1. Install updates:
+    $ sudo yum update -y
+2. Install the open jdk:
+    $ sudo yum install java-1.8.0-openjdk -y
+    $ sudo yum install java-1.8.0-openjdk-devel -y 
+3. Download the tomcat and create the tomcat directory in /opt :
+    $ wget https://downloads.apache.org/tomcat/tomcat-8/v8.5.68/bin/apache-tomcat-8.5.68.tar.gz
+    $ sudo mkdir /opt/tomcat
+4. Untar the tomcat files in /opt/tomcat :
+    $ sudo tar -xzvf ./apache-tomcat-8.5.68.tar.gz -C /opt/tomcat/ --strip-components=1
+5. Create the tomcat group:
+    $ sudo groupadd tomcat
+6. Next, create a new tomcat user. Make this user a member of the tomcat group, with a home directory of /opt/tomcat (where we will install Tomcat), and with a shell of /bin/false (so nobody can log into the account):
+    $ sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
+7. Change access to the install directory:
+    $ sudo chmod -R 755 /opt/tomcat/
+8. Change owner and group ownership of install directory to tomcat:
+    $ sudo chown -R tomcat:tomcat /opt/tomcat
+9. Create the tomcat.service file:
+    $ sudo vim /etc/systemd/system/tomcat.service
+    --- Insert following and save and exit (wq!)---
+    
+    [Unit]
+    Description=Apache Tomcat Web Application Container
+    After=network.target
+
+    [Service]
+    Type=forking
+
+
+    Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+    Environment=CATALINA_HOME=/opt/tomcat
+    Environment=CATALINA_BASE=/opt/tomcat
+    Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+    Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
+
+    ExecStart=/opt/tomcat/bin/startup.sh
+    ExecStop=/opt/tomcat/bin/shutdown.sh
+
+    User=tomcat
+    Group=tomcat
+    UMask=0007
+    RestartSec=10
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+
+10. Reload the daemon:
+    $ sudo systemctl daemon-reload
+11. Start and enable the tomcat:
+    $ sudo systemctl start tomcat
+    $ sudo systemctl enable tomcat
+12. To verify, run:
+    $ sudo systemctl status tomcat

@@ -1,0 +1,20 @@
+After TOMCAT installation, do the following steps for tomcat manager app:
+
+1. Edit conf/tomcat-users.xml file and add following user:
+    ---Insert---
+    <tomcat-users>
+
+        <role rolename="manager-gui"/>
+        <role rolename="manager-script"/>
+        <role rolename="manager-jmx"/>
+        <role rolename="manager-status"/>
+
+        <!--<user name="admin" password="admin" roles="manager-gui,manager-script,manager-jmx,manager-status" />-->
+        <user username="admin" password="admin" roles="manager-gui,manager-script,manager-jmx,manager-status"/>
+
+    </tomcat-users>
+
+    ---
+    Note: you can put another password if you want.
+2. Restart tomcat:
+    $ sudo systemctl restart tomcat
