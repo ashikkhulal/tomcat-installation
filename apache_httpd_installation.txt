@@ -1,0 +1,15 @@
+Install and Configure an HTTP Server (Apache):
+
+Install the Apache Web Server:
+
+    Install the Apache web server, default package from the configured repositories, like so:
+        $ sudo yum install -y httpd
+
+Remove the Default Symlink Configuration from the Server:
+    You will need to edit the /etc/httpd/conf/httpd.conf file and find the following line:
+        Options Indexes FollowSymLinks
+    and remove the symlinks option so it reads simply
+        Options Indexes 
+
+Create a new Index File in the Default Web Server Directory:
+    Our default web server directory is in /var/www/html, so in there, create a file called 'index.html' containing some text that you can test and clearly identify from your client server.
