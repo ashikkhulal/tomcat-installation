@@ -9,7 +9,26 @@ Remove the Default Symlink Configuration from the Server:
     You will need to edit the /etc/httpd/conf/httpd.conf file and find the following line:
         Options Indexes FollowSymLinks
     and remove the symlinks option so it reads simply
-        Options Indexes 
+        Options Indexes
+    Also, edit following lines:
+        AllowOverride None
+    to
+        AllowOverride Options
+
+Start httpd service:
+    $ sudo systemctl start httpd
+    $ sudo systemctl enable httpd
 
 Create a new Index File in the Default Web Server Directory:
     Our default web server directory is in /var/www/html, so in there, create a file called 'index.html' containing some text that you can test and clearly identify from your client server.
+    To verify, run following command:
+        $ curl localhost
+        And it should print what you put in index.html file.
+    
+On the client, to install a text based webbrower:
+
+    Install elinks:
+        $ sudo yum install elinks -y
+    verify by running following command:
+        $ elinks
+        And enter http://(your-private-ip)/index.html to open the text-based browser.
